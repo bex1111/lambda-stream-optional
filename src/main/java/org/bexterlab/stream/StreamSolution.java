@@ -36,7 +36,7 @@ public class StreamSolution {
                 .orElseThrow(RatNotFoundException::new);
     }
 
-    public Map<Species, List<String>> collectAnimeBySpecies() {
+    public Map<Species, List<String>> collectAnimalBySpecies() {
         return animalList.stream()
                 .collect(Collectors.groupingBy(Animal::getSpecies,
                         Collectors.mapping((x) -> x.name, Collectors.toList())));
@@ -101,7 +101,7 @@ public class StreamSolution {
                 .reduce(0L, Long::sum);
     }
 
-    public String concatNames() {
+    public String sortAndConcatNames() {
         return animalList.stream()
                 .map(Animal::getName)
                 .sorted()

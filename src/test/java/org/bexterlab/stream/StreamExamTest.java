@@ -56,7 +56,7 @@ class StreamExamTest {
     void streamTest5() {
         Assertions.assertEquals(Map.of(DOG, List.of("Bark", "Buksi", "Tapancs", "Szimat")
                 , CAT, List.of("Cirmi", "Noel", "Obama"), RAT, List.of("Nick",
-                        "Jhon")), streamExam.collectAnimeBySpecies());
+                        "Jhon")), streamExam.collectAnimalBySpecies());
     }
 
     @Test
@@ -115,7 +115,6 @@ class StreamExamTest {
     @Test
     void streamTest12() {
         Assertions.assertEquals(List.of("Bark", "Buksi", "Cirmi", "Jhon", "Nick", "Noel", "Obama", "Szimat", "Tapancs"), streamExam.sortNameAsc());
-        Assertions.assertEquals(List.of("Tapancs", "Szimat", "Obama", "Noel", "Nick", "Jhon", "Cirmi", "Buksi", "Bark"), streamExam.sortNameDesc());
     }
 
     @Test
@@ -125,7 +124,7 @@ class StreamExamTest {
 
     @Test
     void streamTest14() {
-        Assertions.assertEquals("BarkBuksiCirmiJhonNickNoelObamaSzimatTapancs", streamExam.concatNames());
+        Assertions.assertEquals("BarkBuksiCirmiJhonNickNoelObamaSzimatTapancs", streamExam.sortAndConcatNames());
     }
 
     @Test
@@ -138,6 +137,11 @@ class StreamExamTest {
     @Test
     void streamTest16() {
         Assertions.assertEquals(List.of(CAT, RAT, DOG), streamExam.collectAllSpecies());
+    }
+
+    @Test
+    void streamTest17() {
+        Assertions.assertEquals(List.of("Tapancs", "Szimat", "Obama", "Noel", "Nick", "Jhon", "Cirmi", "Buksi", "Bark"), streamExam.sortNameDesc());
     }
 
     private Runnable threadSleep() {
