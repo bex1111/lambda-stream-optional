@@ -8,6 +8,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.bexterlab.stream.Species.*;
@@ -25,60 +26,118 @@ class StreamExamTest {
                     new Animal().setName("Tapancs").setSpecies(DOG),
                     new Animal().setName("Szimat").setSpecies(DOG));
     private StreamExam streamExam;
-    private StreamSolution streamSolution;
 
     @BeforeEach
     void setUp() {
-        streamExam = new StreamExam();
-        streamSolution = new StreamSolution(ANIMAL_LIST);
+        streamExam = new StreamExam(ANIMAL_LIST);
     }
 
     @Test
     void streamTest1() {
-        Assertions.assertEquals(List.of("Bark", "Buksi", "Tapancs", "Szimat"), streamSolution.findAllDogs());
+        Assertions.assertEquals(List.of("Bark", "Buksi", "Tapancs", "Szimat"), streamExam.findAllDogs());
     }
 
     @Test
     void streamTest2() {
-        Assertions.assertEquals("Nick", streamSolution.findFirstRat());
+        Assertions.assertEquals("Nick", streamExam.findFirstRat());
     }
 
     @Test
     void streamTest3() {
-        Assertions.assertEquals(new Animal().setName("Jhon").setSpecies(RAT), streamSolution.findRat("Jhon"));
+        Assertions.assertEquals(new Animal().setName("Jhon").setSpecies(RAT), streamExam.findRat("Jhon"));
     }
 
     @Test
     void streamTest4() {
-        Assertions.assertThrows(RatNotFoundException.class, () -> streamSolution.findRat("Not Jhon"));
+        Assertions.assertThrows(RatNotFoundException.class, () -> streamExam.findRat("Not Jhon"));
     }
 
     @Test
     void streamTest5() {
         Assertions.assertEquals(Map.of(DOG, List.of("Bark", "Buksi", "Tapancs", "Szimat")
                 , CAT, List.of("Cirmi", "Noel", "Obama"), RAT, List.of("Nick",
-                        "Jhon")), streamSolution.collectAnimeBySpecies());
+                        "Jhon")), streamExam.collectAnimeBySpecies());
     }
 
     @Test
     void streamTest6() {
-        Assertions.assertTrue(streamSolution.isCat("Obama"));
-        Assertions.assertFalse(streamSolution.isCat("Buksi"));
-        Assertions.assertFalse(streamSolution.isCat("Not cat"));
+        Assertions.assertTrue(streamExam.isCat("Obama"));
+        Assertions.assertFalse(streamExam.isCat("Buksi"));
+        Assertions.assertFalse(streamExam.isCat("Not cat"));
     }
 
     @Test
     void streamTest7() {
-        Assertions.assertTrue(streamSolution.isAllCat("Obama", "Cirmi"));
-        Assertions.assertFalse(streamSolution.isAllCat("Buksi", "Nick"));
-        Assertions.assertFalse(streamSolution.isAllCat("Not a cat", "Cat a not"));
+        Assertions.assertTrue(streamExam.isAllCat("Obama", "Cirmi"));
+        Assertions.assertFalse(streamExam.isAllCat("Buksi", "Nick"));
+        Assertions.assertFalse(streamExam.isAllCat("Not a cat", "Cat a not"));
     }
 
     @Test
     void streamTest8() {
-        Assertions.assertTimeout(Duration.of(2, ChronoUnit.SECONDS),
-                () -> streamSolution.fastExecution(Stream.of(threadSleep(), threadSleep(),
+        Assertions.assertTimeout(Duration.of(3, ChronoUnit.SECONDS),
+                () -> streamExam.fastExecution(Stream.of(threadSleep(), threadSleep(),
                         threadSleep(), threadSleep(), threadSleep())));
+    }
+
+    @Test
+    void streamTest9() {
+        Assertions.assertTrue(streamExam.isAllHaveASpecies());
+        streamExam = new StreamExam(Stream.concat(ANIMAL_LIST.stream(),
+                        Stream.of(new Animal().setName("Null species").setSpecies(null)))
+                .collect(Collectors.toList()));
+        Assertions.assertFalse(streamExam.isAllHaveASpecies());
+    }
+
+    @Test
+    void streamTest10() {
+        Assertions.assertTrue(streamExam.hasAnySpecies());
+        streamExam = new StreamExam(Stream.concat(ANIMAL_LIST.stream(),
+                        Stream.of(new Animal().setName("Null species").setSpecies(null)))
+                .collect(Collectors.toList()));
+        Assertions.assertTrue(streamExam.hasAnySpecies());
+        streamExam = new StreamExam(
+                List.of(new Animal().setName("Null species").setSpecies(null),
+                        new Animal().setName("Null species1").setSpecies(null),
+                        new Animal().setName("Null species2").setSpecies(null)));
+        Assertions.assertFalse(streamExam.hasAnySpecies());
+    }
+
+    @Test
+    void streamTest11() {
+        Assertions.assertTrue(streamExam.isAllSpeciesNotNull());
+        streamExam = new StreamExam(Stream.concat(ANIMAL_LIST.stream(),
+                        Stream.of(new Animal().setName("Null species").setSpecies(null)))
+                .collect(Collectors.toList()));
+        Assertions.assertFalse(streamExam.isAllSpeciesNotNull());
+    }
+
+    @Test
+    void streamTest12() {
+        Assertions.assertEquals(List.of("Bark", "Buksi", "Cirmi", "Jhon", "Nick", "Noel", "Obama", "Szimat", "Tapancs"), streamExam.sortNameAsc());
+        Assertions.assertEquals(List.of("Tapancs", "Szimat", "Obama", "Noel", "Nick", "Jhon", "Cirmi", "Buksi", "Bark"), streamExam.sortNameDesc());
+    }
+
+    @Test
+    void streamTest13() {
+        Assertions.assertEquals(44, streamExam.sumCharacterLength());
+    }
+
+    @Test
+    void streamTest14() {
+        Assertions.assertEquals("BarkBuksiCirmiJhonNickNoelObamaSzimatTapancs", streamExam.concatNames());
+    }
+
+    @Test
+    void streamTest15() {
+        Assertions.assertEquals(2L, streamExam.countSpecies(RAT));
+        Assertions.assertEquals(3L, streamExam.countSpecies(CAT));
+        Assertions.assertEquals(4L, streamExam.countSpecies(DOG));
+    }
+
+    @Test
+    void streamTest16() {
+        Assertions.assertEquals(List.of(CAT, RAT, DOG), streamExam.collectAllSpecies());
     }
 
     private Runnable threadSleep() {
