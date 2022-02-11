@@ -1,6 +1,7 @@
 package org.bexterlab.stream;
 
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -56,11 +57,11 @@ public class StreamSolution {
 
     }
 
-    public void fastExecution(Stream<Runnable> runnableStream) {
-        runnableStream
+    public Integer fastExecution(Stream<Supplier<Integer>> runnableStream) {
+        return runnableStream
                 .parallel()
                 .peek(x -> System.out.println(Thread.currentThread().getName()))
-                .forEach(Runnable::run);
+                .map(Supplier::get).reduce(0, Integer::sum);
     }
 
     public boolean isAllHaveASpecies() {

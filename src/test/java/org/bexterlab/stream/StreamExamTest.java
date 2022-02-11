@@ -8,6 +8,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -78,6 +79,8 @@ class StreamExamTest {
         Assertions.assertTimeout(Duration.of(3, ChronoUnit.SECONDS),
                 () -> streamExam.fastExecution(Stream.of(threadSleep(), threadSleep(),
                         threadSleep(), threadSleep(), threadSleep())));
+        Assertions.assertEquals(5, streamExam.fastExecution(Stream.of(threadSleep(), threadSleep(),
+                threadSleep(), threadSleep(), threadSleep())));
     }
 
     @Test
@@ -144,10 +147,11 @@ class StreamExamTest {
         Assertions.assertEquals(List.of("Tapancs", "Szimat", "Obama", "Noel", "Nick", "Jhon", "Cirmi", "Buksi", "Bark"), streamExam.sortNameDesc());
     }
 
-    private Runnable threadSleep() {
+    private Supplier<Integer> threadSleep() {
         return () -> {
             try {
                 Thread.sleep(1000);
+                return 1;
             } catch (InterruptedException e) {
                 throw new AssertionError("Exception occured", e);
             }
