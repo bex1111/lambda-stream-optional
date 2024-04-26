@@ -51,22 +51,18 @@ BinaryOperator<Integer> multiply = (a, b) -> a * b;
 - `Optional.empty()`
 - `Optional.of(value)`
 - `Optional.ofNullable(value)`
-
-
+---
 - `isPresent()`
 - `isEmpty()`
-
-
+---
 - `get()`
 - `orElse(defaultValue)`
 - `orElseGet(supplier)`
 - `orElseThrow(exceptionSupplier)`
-
-
+---
 - `ifPresent(consumer)`
 - `ifPresentOrElse(consumer, emptyAction)`
-
-
+---
 - `map(function)`
 - `flatMap(function)`
 - `filter(predicate)`
@@ -78,8 +74,7 @@ BinaryOperator<Integer> multiply = (a, b) -> a * b;
 - `Stream.empty()`
 - `List.of(values).stream()`
 - `IntStream.range(start, end)`
-
-
+---
 - `filter(Predicate)`
 - `map(Function)`
 - `flatMap(Function)`
@@ -87,14 +82,11 @@ BinaryOperator<Integer> multiply = (a, b) -> a * b;
 - `distinct()`
 - `limit(long)`
 - `skip(long)`
-
-
+---
 - `peek(Consumer)`
-
-
+---
 - `forEach(Consumer)`
-
-
+---
 - `collect(Collector)`
 - `reduce(BinaryOperator)`
 - `sum()`
@@ -104,8 +96,7 @@ BinaryOperator<Integer> multiply = (a, b) -> a * b;
 - `anyMatch(Predicate)` 
 - `allMatch(Predicate)` 
 - `noneMatch(Predicate)` 
-
-
+---
 - `findFirst()` 
 - `findAny()`
 
